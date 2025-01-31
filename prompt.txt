@@ -1,0 +1,3 @@
+Create Agile AI Services webpage who are AI & Gen AI Specialist in AWS, Azure and GCP cloud platforms.  They are specialist in Healthcare and Hospitality GenAI products.  Please come out with back office application to configure the products as well as to compelling tech blog 
+.
+Create at least 12 tables (models)

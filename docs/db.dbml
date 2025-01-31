@@ -1,0 +1,111 @@
+// Copy this text, paste to https://dbdiagram.io/d
+// Or, https://databasediagram.com/app
+// Or, view in VSCode with extension: "DBML Live Preview"
+
+Project DBML {
+  Note: '''
+AgileAiService: Represents the AI services offered by Agile AI Services company.
+BlogPost: Tech blog posts written by Agile AI Services.
+Configuration: Holds configuration settings for various products.
+Product: Represents products developed for specific industries by Agile AI Services.
+Customer: Customers who use Agile AI products.
+Industry: Defines the industries (Healthcare, Hospitality) Agile AI Services focuses on.
+Deployment: Records of product deployments on various platforms.
+Platform: Stores information about cloud platforms (AWS, Azure, GCP).
+HealthcareProduct: Special category for Healthcare-specific products.
+HospitalityProduct: Special category for Hospitality-specific products.
+ServiceSupport: Support services associated with Agile AI services.
+Specialty: Defines the specialties in which Agile AI Services operates.
+'''
+}
+
+Table AgileAiService {
+    id INTEGER [primary key]
+    name VARCHAR 
+    description VARCHAR 
+    platform VARCHAR 
+    }
+
+Table BlogPost {
+    id INTEGER [primary key]
+    title VARCHAR 
+    content VARCHAR 
+    date_posted DATETIME 
+    }
+
+Table Configuration {
+    id INTEGER [primary key]
+    product_id INTEGER 
+    name VARCHAR 
+    value VARCHAR 
+    }
+
+Table Product {
+    id INTEGER [primary key]
+    name VARCHAR 
+    description VARCHAR 
+    agile_ai_service_id INTEGER 
+    }
+
+Table Customer {
+    id INTEGER [primary key]
+    name VARCHAR 
+    industry_id INTEGER 
+    product_id INTEGER 
+    }
+
+Table Industry {
+    id INTEGER [primary key]
+    name VARCHAR 
+    }
+
+Table Deployment {
+    id INTEGER [primary key]
+    product_id INTEGER 
+    platform_id INTEGER 
+    deployment_date DATETIME 
+    status VARCHAR 
+    }
+
+Table Platform {
+    id INTEGER [primary key]
+    name VARCHAR 
+    description VARCHAR 
+    }
+
+Table HealthcareProduct {
+    id INTEGER [primary key]
+    product_id INTEGER 
+    regulation_compliance VARCHAR 
+    }
+
+Table HospitalityProduct {
+    id INTEGER [primary key]
+    product_id INTEGER 
+    user_experiences VARCHAR 
+    }
+
+Table ServiceSupport {
+    id INTEGER [primary key]
+    agile_ai_service_id INTEGER 
+    support_type VARCHAR 
+    details VARCHAR 
+    }
+
+Table Specialty {
+    id INTEGER [primary key]
+    name VARCHAR 
+    }
+
+
+
+// Relationships
+    Ref: Configuration.(product_id) < Product.(id)
+    Ref: Product.(agile_ai_service_id) < AgileAiService.(id)
+    Ref: Customer.(industry_id) < Industry.(id)
+    Ref: Customer.(product_id) < Product.(id)
+    Ref: Deployment.(platform_id) < Platform.(id)
+    Ref: Deployment.(product_id) < Product.(id)
+    Ref: HealthcareProduct.(product_id) < Product.(id)
+    Ref: HospitalityProduct.(product_id) < Product.(id)
+    Ref: ServiceSupport.(agile_ai_service_id) < AgileAiService.(id)

@@ -1,0 +1,305 @@
+about:
+  date: January 31, 2025 00:02:38
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+info:
+  number_relationships: 9
+  number_tables: 12
+info_toggle_checked: true
+resources:
+  AgileAiService:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: description
+    - name: platform
+    - name: id
+    description: Represents the AI services offered by Agile AI Services company.
+    info_list: Represents the AI services offered by Agile AI Services company.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - agile_ai_service_id
+      name: ProductList
+      resource: Product
+    - direction: tomany
+      fks:
+      - agile_ai_service_id
+      name: ServiceSupportList
+      resource: ServiceSupport
+    type: AgileAiService
+    user_key: name
+  BlogPost:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: title
+      required: true
+    - name: content
+    - name: date_posted
+      type: DATETIME
+    description: Tech blog posts written by Agile AI Services.
+    info_list: Tech blog posts written by Agile AI Services.
+    type: BlogPost
+    user_key: id
+  Configuration:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: product_id
+    - name: value
+    - name: id
+    description: Holds configuration settings for various products.
+    info_list: Holds configuration settings for various products.
+    tab_groups:
+    - direction: toone
+      fks:
+      - product_id
+      name: product
+      resource: Product
+    type: Configuration
+    user_key: name
+  Customer:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: industry_id
+    - name: product_id
+    - name: id
+    description: Customers who use Agile AI products.
+    info_list: Customers who use Agile AI products.
+    tab_groups:
+    - direction: toone
+      fks:
+      - industry_id
+      name: industry
+      resource: Industry
+    - direction: toone
+      fks:
+      - product_id
+      name: product
+      resource: Product
+    type: Customer
+    user_key: name
+  Deployment:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: platform_id
+    - name: product_id
+    - name: deployment_date
+      type: DATETIME
+    - name: status
+    description: Records of product deployments on various platforms.
+    info_list: Records of product deployments on various platforms.
+    tab_groups:
+    - direction: toone
+      fks:
+      - platform_id
+      name: platform
+      resource: Platform
+    - direction: toone
+      fks:
+      - product_id
+      name: product
+      resource: Product
+    type: Deployment
+    user_key: id
+  HealthcareProduct:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: product_id
+    - name: regulation_compliance
+    description: Special category for Healthcare-specific products.
+    info_list: Special category for Healthcare-specific products.
+    tab_groups:
+    - direction: toone
+      fks:
+      - product_id
+      name: product
+      resource: Product
+    type: HealthcareProduct
+    user_key: id
+  HospitalityProduct:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: product_id
+    - name: user_experiences
+    description: Special category for Hospitality-specific products.
+    info_list: Special category for Hospitality-specific products.
+    tab_groups:
+    - direction: toone
+      fks:
+      - product_id
+      name: product
+      resource: Product
+    type: HospitalityProduct
+    user_key: id
+  Industry:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: id
+    description: Defines the industries (Healthcare, Hospitality) Agile AI Services
+      focuses on.
+    info_list: Defines the industries (Healthcare, Hospitality) Agile AI Services
+      focuses on.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - industry_id
+      name: CustomerList
+      resource: Customer
+    type: Industry
+    user_key: name
+  Platform:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: description
+    - name: id
+    description: Stores information about cloud platforms (AWS, Azure, GCP).
+    info_list: Stores information about cloud platforms (AWS, Azure, GCP).
+    tab_groups:
+    - direction: tomany
+      fks:
+      - platform_id
+      name: DeploymentList
+      resource: Deployment
+    type: Platform
+    user_key: name
+  Product:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: agile_ai_service_id
+    - name: description
+    - name: id
+    description: Represents products developed for specific industries by Agile AI
+      Services.
+    info_list: Represents products developed for specific industries by Agile AI Services.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - product_id
+      name: ConfigurationList
+      resource: Configuration
+    - direction: tomany
+      fks:
+      - product_id
+      name: CustomerList
+      resource: Customer
+    - direction: tomany
+      fks:
+      - product_id
+      name: DeploymentList
+      resource: Deployment
+    - direction: tomany
+      fks:
+      - product_id
+      name: HealthcareProductList
+      resource: HealthcareProduct
+    - direction: tomany
+      fks:
+      - product_id
+      name: HospitalityProductList
+      resource: HospitalityProduct
+    - direction: toone
+      fks:
+      - agile_ai_service_id
+      name: agile_ai_service
+      resource: AgileAiService
+    type: Product
+    user_key: name
+  ServiceSupport:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: agile_ai_service_id
+    - name: support_type
+    - name: details
+    description: Support services associated with Agile AI services.
+    info_list: Support services associated with Agile AI services.
+    tab_groups:
+    - direction: toone
+      fks:
+      - agile_ai_service_id
+      name: agile_ai_service
+      resource: AgileAiService
+    type: ServiceSupport
+    user_key: id
+  Specialty:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: id
+    description: Defines the specialties in which Agile AI Services operates.
+    info_list: Defines the specialties in which Agile AI Services operates.
+    type: Specialty
+    user_key: name
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    detail_mode: tab
+    edit_on_mode: dblclick
+    exclude_listpicker: false
+    include_translation: 'false'
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    new_mode: dialog
+    pick_style: list
+    row_height: small,
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: 'false'

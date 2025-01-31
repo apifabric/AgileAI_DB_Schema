@@ -1,0 +1,299 @@
+"models":
+- "classname": |-
+    AgileAIService
+  "code": |
+    class AgileAIService(Base):
+        __tablename__ = 'agile_ai_services'
+
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        name = Column(String, nullable=False)
+        description = Column(String)
+        platform = Column(String)
+  "description": |-
+    Represents the AI services offered by Agile AI Services company.
+  "name": |-
+    AgileAIService
+- "classname": |-
+    Platform
+  "code": |
+    class Platform(Base):
+        __tablename__ = 'platforms'
+
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        name = Column(String, nullable=False)
+        description = Column(String)
+  "description": |-
+    Stores information about cloud platforms (AWS, Azure, GCP).
+  "name": |-
+    Platform
+- "classname": |-
+    Specialty
+  "code": |+
+    class Specialty(Base):
+        __tablename__ = 'specialties'
+
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        name = Column(String, nullable=False)
+
+  "description": |-
+    Defines the specialties in which Agile AI Services operates.
+  "name": |-
+    Specialty
+- "classname": |-
+    Industry
+  "code": |+
+    class Industry(Base):
+        __tablename__ = 'industries'
+
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        name = Column(String, nullable=False)
+
+  "description": |-
+    Defines the industries (Healthcare, Hospitality) Agile AI Services focuses on.
+  "name": |-
+    Industry
+- "classname": |-
+    Product
+  "code": |
+    class Product(Base):
+        __tablename__ = 'products'
+
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        name = Column(String, nullable=False)
+        description = Column(String)
+        agile_ai_service_id = Column(Integer, ForeignKey('agile_ai_services.id'))
+  "description": |-
+    Represents products developed for specific industries by Agile AI Services.
+  "name": |-
+    Product
+- "classname": |-
+    Configuration
+  "code": |
+    class Configuration(Base):
+        __tablename__ = 'configurations'
+
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        product_id = Column(Integer, ForeignKey('products.id'))
+        name = Column(String, nullable=False)
+        value = Column(String)
+  "description": |-
+    Holds configuration settings for various products.
+  "name": |-
+    Configuration
+- "classname": |-
+    BlogPost
+  "code": |
+    class BlogPost(Base):
+        __tablename__ = 'blog_posts'
+
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        title = Column(String, nullable=False)
+        content = Column(String)
+        date_posted = Column(DateTime, default=datetime.now)
+  "description": |-
+    Tech blog posts written by Agile AI Services.
+  "name": |-
+    BlogPost
+- "classname": |-
+    HealthcareProduct
+  "code": |
+    class HealthcareProduct(Base):
+        __tablename__ = 'healthcare_products'
+
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        product_id = Column(Integer, ForeignKey('products.id'))
+        regulation_compliance = Column(String)
+  "description": |-
+    Special category for Healthcare-specific products.
+  "name": |-
+    HealthcareProduct
+- "classname": |-
+    HospitalityProduct
+  "code": |
+    class HospitalityProduct(Base):
+        __tablename__ = 'hospitality_products'
+
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        product_id = Column(Integer, ForeignKey('products.id'))
+        user_experiences = Column(String)
+  "description": |-
+    Special category for Hospitality-specific products.
+  "name": |-
+    HospitalityProduct
+- "classname": |-
+    ServiceSupport
+  "code": |
+    class ServiceSupport(Base):
+        __tablename__ = 'service_supports'
+
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        agile_ai_service_id = Column(Integer, ForeignKey('agile_ai_services.id'))
+        support_type = Column(String)
+        details = Column(String)
+  "description": |-
+    Support services associated with Agile AI services.
+  "name": |-
+    ServiceSupport
+- "classname": |-
+    Customer
+  "code": |
+    class Customer(Base):
+        __tablename__ = 'customers'
+
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        name = Column(String, nullable=False)
+        industry_id = Column(Integer, ForeignKey('industries.id'))
+        product_id = Column(Integer, ForeignKey('products.id'))
+  "description": |-
+    Customers who use Agile AI products.
+  "name": |-
+    Customer
+- "classname": |-
+    Deployment
+  "code": |
+    class Deployment(Base):
+        __tablename__ = 'deployments'
+
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        product_id = Column(Integer, ForeignKey('products.id'))
+        platform_id = Column(Integer, ForeignKey('platforms.id'))
+        deployment_date = Column(DateTime, default=datetime.now)
+        status = Column(String)
+  "description": |-
+    Records of product deployments on various platforms.
+  "name": |-
+    Deployment
+"name": |-
+  AgileAI_DB_Schema
+"rules": []
+"test_data": |-
+  Agile AI Services and their associated entities, products, and blog posts.
+
+  Healthcare and Hospitality-specific attributes for developed products.
+"test_data_rows":
+- "code": |-
+    service1 = AgileAIService(
+        name="AI Diagnostic Health",
+        description="Cutting-edge AI diagnostics for healthcare",
+        platform="AWS"
+    )
+  "test_data_row_variable": |-
+    service1
+- "code": |-
+    platform1 = Platform(
+        name="AWS",
+        description="Amazon Web Services Platform"
+    )
+  "test_data_row_variable": |-
+    platform1
+- "code": |-
+    specialty1 = Specialty(
+        name="Gen AI"
+    )
+  "test_data_row_variable": |-
+    specialty1
+- "code": |-
+    industry1 = Industry(
+        name="Healthcare"
+    )
+  "test_data_row_variable": |-
+    industry1
+- "code": |-
+    product1 = Product(
+        name="AI Health Monitor",
+        description="Monitor patient vitals through advanced AI algorithms",
+        agile_ai_service_id=1
+    )
+  "test_data_row_variable": |-
+    product1
+- "code": |-
+    config1 = Configuration(
+        product_id=1,
+        name="High Sensitivity Mode",
+        value="Enabled"
+    )
+  "test_data_row_variable": |-
+    config1
+- "code": |-
+    blog1 = BlogPost(
+        title="The Future of AI in Healthcare",
+        content="Exploring the latest developments in AI for the healthcare industry",
+        date_posted=date(2023, 3, 15)
+    )
+  "test_data_row_variable": |-
+    blog1
+- "code": |-
+    healthcare_prod1 = HealthcareProduct(
+        product_id=1,
+        regulation_compliance="FDA Approved"
+    )
+  "test_data_row_variable": |-
+    healthcare_prod1
+- "code": |-
+    hospitality_prod1 = HospitalityProduct(
+        product_id=2,
+        user_experiences="Enhanced Guest Interaction"
+    )
+  "test_data_row_variable": |-
+    hospitality_prod1
+- "code": |-
+    support1 = ServiceSupport(
+        agile_ai_service_id=1,
+        support_type="Premium Support",
+        details="24/7 dedicated helpline"
+    )
+  "test_data_row_variable": |-
+    support1
+- "code": |-
+    customer1 = Customer(
+        name="Global Health Corp",
+        industry_id=1,
+        product_id=1
+    )
+  "test_data_row_variable": |-
+    customer1
+- "code": |-
+    deployment1 = Deployment(
+        product_id=1,
+        platform_id=1,
+        deployment_date=date(2023, 2, 1),
+        status="Deployed"
+    )
+  "test_data_row_variable": |-
+    deployment1
+"test_data_sqlite": |-
+  -- Insert AgileAIService rows
+  INSERT INTO agile_ai_services (name, description, platform) VALUES ('AI Diagnostic Health', 'Cutting-edge AI diagnostics for healthcare', 'AWS');
+
+  -- Insert Platform rows
+  INSERT INTO platforms (name, description) VALUES ('AWS', 'Amazon Web Services Platform');
+
+  -- Insert Specialty rows
+  INSERT INTO specialties (name) VALUES ('Gen AI');
+
+  -- Insert Industry rows
+  INSERT INTO industries (name) VALUES ('Healthcare');
+
+  -- Insert Product rows
+  INSERT INTO products (name, description, agile_ai_service_id) VALUES ('AI Health Monitor', 'Monitor patient vitals through advanced AI algorithms', 1);
+
+  -- Insert Configuration rows
+  INSERT INTO configurations (product_id, name, value) VALUES (1, 'High Sensitivity Mode', 'Enabled');
+
+  -- Insert BlogPost rows
+  INSERT INTO blog_posts (title, content, date_posted) VALUES ('The Future of AI in Healthcare', 'Exploring the latest developments in AI for the healthcare industry', '2023-03-15');
+
+  -- Insert HealthcareProduct rows
+  INSERT INTO healthcare_products (product_id, regulation_compliance) VALUES (1, 'FDA Approved');
+
+  -- Insert HospitalityProduct rows
+  INSERT INTO hospitality_products (product_id, user_experiences) VALUES (2, 'Enhanced Guest Interaction');
+
+  -- Insert ServiceSupport rows
+  INSERT INTO service_supports (agile_ai_service_id, support_type, details) VALUES (1, 'Premium Support', '24/7 dedicated helpline');
+
+  -- Insert Customer rows
+  INSERT INTO customers (name, industry_id, product_id) VALUES ('Global Health Corp', 1, 1);
+
+  -- Insert Deployment rows
+  INSERT INTO deployments (product_id, platform_id, deployment_date, status) VALUES (1, 1, '2023-02-01', 'Deployed');
