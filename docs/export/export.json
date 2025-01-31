@@ -1,0 +1,53 @@
+{
+    "rules": [],
+    "models": [
+        {
+            "classname": "AgileAiService",
+            "code": "class AgileAiService(Base):  # type: ignore\n    \"\"\"\n    description: Represents the AI services offered by Agile AI Services company.\n    \"\"\"\n    __tablename__ = 'agile_ai_services'\n    _s_collection_name = 'AgileAiService'  # type: ignore\n\n    id = Column(Integer, primary_key=True)\n    name = Column(String, nullable=False)\n    description = Column(String)\n    platform = Column(String)\n\n    # parent relationships (access parent)\n\n    # child relationships (access children)\n    ProductList : Mapped[List[\"Product\"]] = relationship(back_populates=\"agile_ai_service\")\n    ServiceSupportList : Mapped[List[\"ServiceSupport\"]] = relationship(back_populates=\"agile_ai_service\")"
+        },
+        {
+            "classname": "BlogPost",
+            "code": "class BlogPost(Base):  # type: ignore\n    \"\"\"\n    description: Tech blog posts written by Agile AI Services.\n    \"\"\"\n    __tablename__ = 'blog_posts'\n    _s_collection_name = 'BlogPost'  # type: ignore\n\n    id = Column(Integer, primary_key=True)\n    title = Column(String, nullable=False)\n    content = Column(String)\n    date_posted = Column(DateTime)"
+        },
+        {
+            "classname": "Industry",
+            "code": "class Industry(Base):  # type: ignore\n    \"\"\"\n    description: Defines the industries (Healthcare, Hospitality) Agile AI Services focuses on.\n    \"\"\"\n    __tablename__ = 'industries'\n    _s_collection_name = 'Industry'  # type: ignore\n\n    id = Column(Integer, primary_key=True)\n    name = Column(String, nullable=False)\n\n    # parent relationships (access parent)\n\n    # child relationships (access children)\n    CustomerList : Mapped[List[\"Customer\"]] = relationship(back_populates=\"industry\")"
+        },
+        {
+            "classname": "Platform",
+            "code": "class Platform(Base):  # type: ignore\n    \"\"\"\n    description: Stores information about cloud platforms (AWS, Azure, GCP).\n    \"\"\"\n    __tablename__ = 'platforms'\n    _s_collection_name = 'Platform'  # type: ignore\n\n    id = Column(Integer, primary_key=True)\n    name = Column(String, nullable=False)\n    description = Column(String)\n\n    # parent relationships (access parent)\n\n    # child relationships (access children)\n    DeploymentList : Mapped[List[\"Deployment\"]] = relationship(back_populates=\"platform\")"
+        },
+        {
+            "classname": "Specialty",
+            "code": "class Specialty(Base):  # type: ignore\n    \"\"\"\n    description: Defines the specialties in which Agile AI Services operates.\n    \"\"\"\n    __tablename__ = 'specialties'\n    _s_collection_name = 'Specialty'  # type: ignore\n\n    id = Column(Integer, primary_key=True)\n    name = Column(String, nullable=False)"
+        },
+        {
+            "classname": "Product",
+            "code": "class Product(Base):  # type: ignore\n    \"\"\"\n    description: Represents products developed for specific industries by Agile AI Services.\n    \"\"\"\n    __tablename__ = 'products'\n    _s_collection_name = 'Product'  # type: ignore\n\n    id = Column(Integer, primary_key=True)\n    name = Column(String, nullable=False)\n    description = Column(String)\n    agile_ai_service_id = Column(ForeignKey('agile_ai_services.id'))\n\n    # parent relationships (access parent)\n    agile_ai_service : Mapped[\"AgileAiService\"] = relationship(back_populates=(\"ProductList\"))\n\n    # child relationships (access children)\n    ConfigurationList : Mapped[List[\"Configuration\"]] = relationship(back_populates=\"product\")\n    CustomerList : Mapped[List[\"Customer\"]] = relationship(back_populates=\"product\")\n    DeploymentList : Mapped[List[\"Deployment\"]] = relationship(back_populates=\"product\")\n    HealthcareProductList : Mapped[List[\"HealthcareProduct\"]] = relationship(back_populates=\"product\")\n    HospitalityProductList : Mapped[List[\"HospitalityProduct\"]] = relationship(back_populates=\"product\")"
+        },
+        {
+            "classname": "ServiceSupport",
+            "code": "class ServiceSupport(Base):  # type: ignore\n    \"\"\"\n    description: Support services associated with Agile AI services.\n    \"\"\"\n    __tablename__ = 'service_supports'\n    _s_collection_name = 'ServiceSupport'  # type: ignore\n\n    id = Column(Integer, primary_key=True)\n    agile_ai_service_id = Column(ForeignKey('agile_ai_services.id'))\n    support_type = Column(String)\n    details = Column(String)\n\n    # parent relationships (access parent)\n    agile_ai_service : Mapped[\"AgileAiService\"] = relationship(back_populates=(\"ServiceSupportList\"))"
+        },
+        {
+            "classname": "Configuration",
+            "code": "class Configuration(Base):  # type: ignore\n    \"\"\"\n    description: Holds configuration settings for various products.\n    \"\"\"\n    __tablename__ = 'configurations'\n    _s_collection_name = 'Configuration'  # type: ignore\n\n    id = Column(Integer, primary_key=True)\n    product_id = Column(ForeignKey('products.id'))\n    name = Column(String, nullable=False)\n    value = Column(String)\n\n    # parent relationships (access parent)\n    product : Mapped[\"Product\"] = relationship(back_populates=(\"ConfigurationList\"))"
+        },
+        {
+            "classname": "Customer",
+            "code": "class Customer(Base):  # type: ignore\n    \"\"\"\n    description: Customers who use Agile AI products.\n    \"\"\"\n    __tablename__ = 'customers'\n    _s_collection_name = 'Customer'  # type: ignore\n\n    id = Column(Integer, primary_key=True)\n    name = Column(String, nullable=False)\n    industry_id = Column(ForeignKey('industries.id'))\n    product_id = Column(ForeignKey('products.id'))\n\n    # parent relationships (access parent)\n    industry : Mapped[\"Industry\"] = relationship(back_populates=(\"CustomerList\"))\n    product : Mapped[\"Product\"] = relationship(back_populates=(\"CustomerList\"))"
+        },
+        {
+            "classname": "Deployment",
+            "code": "class Deployment(Base):  # type: ignore\n    \"\"\"\n    description: Records of product deployments on various platforms.\n    \"\"\"\n    __tablename__ = 'deployments'\n    _s_collection_name = 'Deployment'  # type: ignore\n\n    id = Column(Integer, primary_key=True)\n    product_id = Column(ForeignKey('products.id'))\n    platform_id = Column(ForeignKey('platforms.id'))\n    deployment_date = Column(DateTime)\n    status = Column(String)\n\n    # parent relationships (access parent)\n    platform : Mapped[\"Platform\"] = relationship(back_populates=(\"DeploymentList\"))\n    product : Mapped[\"Product\"] = relationship(back_populates=(\"DeploymentList\"))"
+        },
+        {
+            "classname": "HealthcareProduct",
+            "code": "class HealthcareProduct(Base):  # type: ignore\n    \"\"\"\n    description: Special category for Healthcare-specific products.\n    \"\"\"\n    __tablename__ = 'healthcare_products'\n    _s_collection_name = 'HealthcareProduct'  # type: ignore\n\n    id = Column(Integer, primary_key=True)\n    product_id = Column(ForeignKey('products.id'))\n    regulation_compliance = Column(String)\n\n    # parent relationships (access parent)\n    product : Mapped[\"Product\"] = relationship(back_populates=(\"HealthcareProductList\"))"
+        },
+        {
+            "classname": "HospitalityProduct",
+            "code": "class HospitalityProduct(Base):  # type: ignore\n    \"\"\"\n    description: Special category for Hospitality-specific products.\n    \"\"\"\n    __tablename__ = 'hospitality_products'\n    _s_collection_name = 'HospitalityProduct'  # type: ignore\n\n    id = Column(Integer, primary_key=True)\n    product_id = Column(ForeignKey('products.id'))\n    user_experiences = Column(String)\n\n    # parent relationships (access parent)\n    product : Mapped[\"Product\"] = relationship(back_populates=(\"HospitalityProductList\"))"
+        }
+    ]
+}
